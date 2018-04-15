@@ -1790,14 +1790,6 @@
       "resolved": "https://registry.npmjs.org/entities/-/entities-1.1.1.tgz",
       "integrity": "sha1-blwtClYhtdra7O+AuQ7ftc13cvA="
     },
-    "errno": {
-      "version": "0.1.7",
-      "resolved": "https://registry.npmjs.org/errno/-/errno-0.1.7.tgz",
-      "integrity": "sha512-MfrRBDWzIWifgq6tJj60gkAwtLNb6sQPlcFrSOflcP1aFmmruKQ2wRnze/8V6kgyz7H3FF8Npzv78mZ7XLLflg==",
-      "requires": {
-        "prr": "1.0.1"
-      }
-    },
     "es-abstract": {
       "version": "1.11.0",
       "resolved": "https://registry.npmjs.org/es-abstract/-/es-abstract-1.11.0.tgz",
@@ -3944,9 +3936,9 @@
       "integrity": "sha1-8/dSL073gjSNqBYbrZ7P1Rv4OnU="
     },
     "parcel-bundler": {
-      "version": "1.7.0",
-      "resolved": "https://registry.npmjs.org/parcel-bundler/-/parcel-bundler-1.7.0.tgz",
-      "integrity": "sha512-U3AeOJWVZXhzTCceuCUfKpKX3hGDOAhYArdJLMrTZGFjKhg+hJboWqy6Tw6ye36WpqLWZrBLeGx7kBpLHJBr3A==",
+      "version": "1.7.1",
+      "resolved": "https://registry.npmjs.org/parcel-bundler/-/parcel-bundler-1.7.1.tgz",
+      "integrity": "sha1-DFM1udOUZpjB63vCgsBcAAfrErk=",
       "requires": {
         "babel-code-frame": "6.26.0",
         "babel-core": "6.26.0",
@@ -3997,7 +3989,6 @@
         "tomlify-j0.4": "3.0.0",
         "uglify-es": "3.3.9",
         "v8-compile-cache": "1.1.2",
-        "worker-farm": "1.6.0",
         "ws": "4.1.0"
       },
       "dependencies": {
@@ -5281,11 +5272,6 @@
       "resolved": "https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz",
       "integrity": "sha1-IS1b/hMYMGpCD2QCuOJv85ZHqEk="
     },
-    "prr": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/prr/-/prr-1.0.1.tgz",
-      "integrity": "sha1-0/wRS6BplaRexok/SEzrHXj19HY="
-    },
     "pseudomap": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/pseudomap/-/pseudomap-1.0.2.tgz",
@@ -6333,14 +6319,6 @@
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/wordwrap/-/wordwrap-1.0.0.tgz",
       "integrity": "sha1-J1hIEIkUVqQXHI0CJkQa3pDLyus="
-    },
-    "worker-farm": {
-      "version": "1.6.0",
-      "resolved": "https://registry.npmjs.org/worker-farm/-/worker-farm-1.6.0.tgz",
-      "integrity": "sha512-6w+3tHbM87WnSWnENBUvA2pxJPLhQUg5LKwUQHq3r+XPhIM+Gh2R5ycbwPCyuGbNg+lPgdcnQUhuC02kJCvffQ==",
-      "requires": {
-        "errno": "0.1.7"
-      }
     },
     "wrappy": {
       "version": "1.0.2",
