@@ -1,41 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
 class App extends React.Component {
   state = {
     show: false
-  }
+  };
   handleShowAll() {
-    this.setState({show: !this.state.show})
+    this.setState({ show: !this.state.show });
   }
   handleClick() {
-    this.setState({show: !this.state.show})
-    console.log('please work')
+    this.setState({ show: !this.state.show });
+    console.log("please work");
   }
   render() {
     return (
       <div>
         <button onClick={() => this.handleClick()}>Click Me!</button>
-        {this.state.show && 
+        {this.state.show && (
           <input
-            type="button" 
+            type="button"
             value="another button to click!"
             onClick={() => this.handleShowAll()}
           />
-        }
+        )}
       </div>
-    )
+    );
   }
 }
 
 // Message Listener function
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   // If message is injectApp
-  if (request.injectApp) {  
+  if (request.injectApp) {
     // Inject our app to DOM and send response
     injectApp();
     response({
-      startedExtension: true,
+      startedExtension: true
     });
   }
 });
