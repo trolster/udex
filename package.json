@@ -4,10 +4,10 @@
   "description": "Description",
   "main": "src/js/main.js",
   "scripts": {
-    "build": "parcel build src/js/main.js -d src/build/ -o main.js",
-    "watch": "parcel watch src/js/main.js -d src/build/ -o main.js"
+    "build": "parcel build src/js/main.js -d src/build/ -o main",
+    "watch": "parcel watch src/js/main.js -d src/build/ -o main"
   },
-  "author": "Atakan Goktepe",
+  "author": "Mikkel Trolle Larsen",
   "dependencies": {
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
