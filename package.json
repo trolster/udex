@@ -9,8 +9,9 @@
   },
   "author": "Mikkel Trolle Larsen",
   "dependencies": {
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "react": "^16.3.2",
+    "react-dom": "^16.3.1",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "babel-plugin-transform-class-properties": "^6.24.1",

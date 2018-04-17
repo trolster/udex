@@ -1,28 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import styled from 'styled-components';
+
+const Button = styled.button`
+  border: 1px solid blue;
+  border-radius: 5px;
+`;
 
 class App extends React.Component {
-  state = {
-    show: false
-  };
-  handleShowAll() {
-    this.setState({ show: !this.state.show });
-  }
   handleClick() {
-    this.setState({ show: !this.state.show });
-    console.log("please work");
+    console.log("hi");
   }
   render() {
     return (
       <div>
-        <button onClick={() => this.handleClick()}>Click Me!</button>
-        {this.state.show && (
-          <input
-            type="button"
-            value="another button to click!"
-            onClick={() => this.handleShowAll()}
-          />
-        )}
+        <Button onClick={() => this.handleClick()}>
+          Click Me!
+        </Button>
       </div>
     );
   }
