@@ -19,21 +19,11 @@ class App extends React.Component {
   }
 }
 
-// Message Listener function
-chrome.runtime.onMessage.addListener((request, sender, response) => {
-  // If message is injectApp
-  if (request.injectApp) {
-    // Inject our app to DOM and send response
-    injectApp();
-    response({
-      startedExtension: true
-    });
-  }
-});
-
 function injectApp() {
   const newDiv = document.createElement("div");
   newDiv.setAttribute("id", "udex");
   document.body.prepend(newDiv);
   ReactDOM.render(<App />, newDiv);
 }
+
+injectApp();
