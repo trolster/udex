@@ -4,8 +4,7 @@ A quality-of-life Google Chrome Extension for Udacity Reviewers.
 
 ## Dependencies
 
-Node.js version 8+
-npm
+Node.js version 8+ and npm
 
 ## Get Started
 
@@ -21,11 +20,11 @@ It's quite easy to install a chrome extension from disk, and since this extensio
 
 It injects some JavaScript into any page the matches `https://review.udacity.com/*`. This adds some buttons with some actions associated:
 
-### "Open All" Button
+#### "Open All" Button
 Expand all rubric items, with the radio "passed" already selected.
 
-### "Save All" Button
-Submits all open rubric items.
+#### "Save All" Button
+Submits all open rubric items. :warning: Doesn't work yet!
 
 ## What will it do in the future?
 
