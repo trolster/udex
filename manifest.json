@@ -14,8 +14,8 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "https://news.ycombinator.com/*",
+        "https://review.udacity.com/*"
       ],
       "js": [
         "src/build/main.js"
