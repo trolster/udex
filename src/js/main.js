@@ -1,22 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { OpenAll, SaveAll } from "./components/Buttons";
+import CritiqueButtons from "./components/CritiqueButtons";
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        <OpenAll />
-        <SaveAll />
+        <CritiqueButtons />
       </div>
     );
   }
 }
 
 function injectApp() {
+  const selector = `section[ng-show="currentTab == 'feedback'"]`;
+  const feedbackSection = document.querySelector(selector);
   const newDiv = document.createElement("div");
   newDiv.setAttribute("id", "udex");
-  document.body.prepend(newDiv);
+  feedbackSection.prepend(newDiv);
   ReactDOM.render(<App />, newDiv);
 }
 
