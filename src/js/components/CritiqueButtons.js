@@ -15,6 +15,11 @@ class CritiqueButtons extends React.Component {
     submitButtons.forEach(button => {
       button.click();
     });
+    // Save the general comment as well
+    const generalCommentButton = document.querySelector(
+      'button[busy-click="saveGeneralComment()"]'
+    );
+    generalCommentButton.click();
   }
   render() {
     return (
