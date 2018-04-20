@@ -4,14 +4,17 @@ import ReactDOM from "react-dom";
 class CritiqueButtons extends React.Component {
   handleExpand() {
     const radioButtons = document.querySelectorAll('input[value="passed"]');
-    for (let i = 0; i < radioButtons.length; i++) {
-      radioButtons[i].click();
-    }
-    console.log(radioButtons);
-    console.log("radioButtons");
+    radioButtons.forEach(button => {
+      button.click();
+    });
   }
   handleSubmit() {
-    console.log("Pretend to handle submit..");
+    const submitButtons = document.querySelectorAll(
+      'button[busy-click="_submit()"]'
+    );
+    submitButtons.forEach(button => {
+      button.click();
+    });
   }
   render() {
     return (
@@ -21,14 +24,14 @@ class CritiqueButtons extends React.Component {
           className="btn btn-default"
           onClick={() => this.handleExpand()}
         >
-          Open All
+          Mark All Passed
         </button>
         <button
           type="button"
-          className="btn btn-default"
+          className="btn btn-secondary"
           onClick={() => this.handleSubmit()}
         >
-          Save All
+          Submit All Open
         </button>
       </div>
     );
