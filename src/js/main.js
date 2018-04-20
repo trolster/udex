@@ -15,10 +15,12 @@ class App extends React.Component {
 function injectApp() {
   const selector = `section[ng-show="currentTab == 'feedback'"]`;
   const feedbackSection = document.querySelector(selector);
-  const newDiv = document.createElement("div");
-  newDiv.setAttribute("id", "udex");
-  feedbackSection.prepend(newDiv);
-  ReactDOM.render(<App />, newDiv);
+  const top = document.createElement("div");
+  const bottom = document.createElement("div");
+  feedbackSection.prepend(top);
+  feedbackSection.append(bottom);
+  ReactDOM.render(<App />, top);
+  ReactDOM.render(<App />, bottom);
 }
 
 injectApp();
