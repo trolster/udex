@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "Udex",
+  "name": "UDEX",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "version": "1.0",
   "browser_action": {
     "default_icon": "icon.png",
-    "default_popup": "src/popup.html"
+    "default_title": "UDEX Chrome Extension"
   },
   "permissions": [
     "activeTab",
@@ -14,7 +14,6 @@
   "content_scripts": [
     {
       "matches": [
-        "https://news.ycombinator.com/*",
         "https://review.udacity.com/*"
       ],
       "js": [
