@@ -24,7 +24,7 @@ It injects some JavaScript into any page the matches `https://review.udacity.com
 Expand all rubric items, with the radio "passed" already selected.
 
 #### "Save All" Button
-Submits all open rubric items. :warning: Doesn't work yet!
+Submits all open rubric items.
 
 ## What will it do in the future?
 
