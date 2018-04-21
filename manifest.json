@@ -5,7 +5,7 @@
   "version": "1.0",
   "browser_action": {
     "default_icon": "images/light-bulb-32.png",
-    "default_title": "UDEX Chrome Extension"
+    "default_title": "udex Chrome Extension"
   },
   "permissions": [
     "activeTab",
