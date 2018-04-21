@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import CritiqueButtons from "./components/CritiqueButtons";
+import CritiqueButtonContainer from "./components/CritiqueButtonContainer";
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        <CritiqueButtons />
+        <CritiqueButtonContainer />
       </div>
     );
   }
