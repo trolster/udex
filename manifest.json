@@ -4,7 +4,7 @@
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "version": "1.0",
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "images/light-bulb-32.png",
     "default_title": "UDEX Chrome Extension"
   },
   "permissions": [
@@ -20,5 +20,11 @@
         "build/main.js"
       ]
     }
-  ]
+  ],
+  "icons": {
+    "16": "images/light-bulb-16.png",
+    "32": "images/light-bulb-32.png",
+    "64": "images/light-bulb-64.png",
+    "128": "images/light-bulb-128.png"
+  }
 }
