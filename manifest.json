@@ -17,7 +17,7 @@
         "https://review.udacity.com/*"
       ],
       "js": [
-        "src/build/main.js"
+        "build/main.js"
       ]
     }
   ]
