@@ -1,11 +1,12 @@
 {
-  "name": "UDEX",
+  "name": "udex",
   "version": "1.0.0",
   "description": "Description",
   "main": "src/js/main.js",
   "scripts": {
     "build": "parcel build src/js/main.js -d build/ -o main",
-    "watch": "parcel watch src/js/main.js -d build/ -o main"
+    "watch": "parcel watch src/js/main.js -d build/ -o main",
+    "build:zip": "zip -r udex.zip build images manifest.json"
   },
   "author": "Mikkel Trolle Larsen",
   "dependencies": {
