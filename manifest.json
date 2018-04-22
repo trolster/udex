@@ -1,14 +1,11 @@
 {
   "manifest_version": 2,
   "name": "udex",
+  "short_name": "udex",
+  "author": "Mikkel Trolle Larsen",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "version": "1.0",
-  "browser_action": {
-    "default_icon": "images/light-bulb-32.png",
-    "default_title": "udex Chrome Extension"
-  },
   "permissions": [
-    "activeTab",
     "tabs"
   ],
   "content_scripts": [
@@ -26,5 +23,7 @@
     "32": "images/light-bulb-32.png",
     "64": "images/light-bulb-64.png",
     "128": "images/light-bulb-128.png"
-  }
+  },
+  "default_locale": "en",
+  "homepage_url": "https://github.com/trolster/udex-chrome-extension"
 }
