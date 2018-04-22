@@ -5,7 +5,9 @@
   "scripts": {
     "build": "parcel build src/js/main.js -d build/ -o main",
     "watch": "parcel watch src/js/main.js -d build/ -o main",
-    "build:zip": "rm udex.zip && zip -r udex.zip build images manifest.json"
+    "zip": "zip -r udex.zip build images manifest.json",
+    "prezip": "rm udex.zip",
+    "postbuild": "npm run zip"
   },
   "author": "Mikkel Trolle Larsen",
   "dependencies": {
