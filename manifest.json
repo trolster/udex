@@ -24,6 +24,5 @@
     "64": "images/light-bulb-64.png",
     "128": "images/light-bulb-128.png"
   },
-  "default_locale": "en",
   "homepage_url": "https://github.com/trolster/udex-chrome-extension"
 }
