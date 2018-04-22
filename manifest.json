@@ -4,7 +4,7 @@
   "short_name": "udex",
   "author": "Mikkel Trolle Larsen",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
-  "version": "1.0",
+  "version": "1.0.1",
   "permissions": [
     "tabs"
   ],
