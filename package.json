@@ -1,6 +1,6 @@
 {
   "name": "udex",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "scripts": {
     "build": "parcel build src/js/main.js -d build/ -o main",
