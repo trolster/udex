@@ -13,15 +13,11 @@ class App extends React.Component {
 }
 
 function injectApp() {
-  // Inject data to let a website know it's installed. The website will have to
-  // be aware of the extension, and include an element with the extension id as
-  // the class name, and a data-is-installed attribute set to false.
-  const marker = document.querySelector(".papbfgdefjaddphbaekhljchpbigedei");
-  if (marker) {
-    // Click on the marker so that the application can detect that the
-    // extension is installed.
-    marker.click();
-  }
+  // Inject data to let a matched websites know it's installed.
+  const marker = document.createElement("div");
+  marker.id = "papbfgdefjaddphbaekhljchpbigedei";
+  marker.style.display = "none";
+  document.body.append(marker);
   // Add buttons to the feedback tab.
   const selector = `section[ng-show="currentTab == 'feedback'"]`;
   const feedbackSection = document.querySelector(selector);
