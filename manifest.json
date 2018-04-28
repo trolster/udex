@@ -8,6 +8,12 @@
   "permissions": [
     "tabs"
   ],
+  "background": {
+    "scripts": [
+      "build/background.js"
+    ],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "matches": [
