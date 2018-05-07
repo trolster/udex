@@ -4,13 +4,17 @@
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "watch": {
     "build:content": "src/js/main.js",
-    "build:background": "src/js/background.js"
+    "build:background": [
+      "src/js/background.js",
+      "src/popup.html",
+      "src/js/popup.js"
+    ]
   },
   "scripts": {
     "watch": "npm-watch",
     "build:content": "parcel build src/js/main.js -d build/ -o main",
-    "prebuild:background": "rm build/background.js",
-    "build:background": "cp src/js/background.js build/background.js",
+    "prebuild:background": "rm -rf build/background.js, build/popup.html, build/popup.js",
+    "build:background": "cp src/js/background.js src/js/popup.js src/popup.html build/",
     "zip": "zip -r udex.zip build images manifest.json",
     "prezip": "rm udex.zip"
   },
