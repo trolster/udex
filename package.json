@@ -4,15 +4,14 @@
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "scripts": {
     "build": "parcel build src/js/main.js -d build/ -o main",
-    "build:background": "parcel build src/js/background.js -d build/ -o background",
     "watch": "parcel watch src/js/main.js -d build/ -o main",
-    "watch:background": "parcel watch src/js/background.js -d build/ -o background",
     "zip": "zip -r udex.zip build images manifest.json",
     "prezip": "rm udex.zip",
     "postbuild": "npm run zip"
   },
   "author": "Mikkel Trolle Larsen",
   "dependencies": {
+    "npm-watch": "^0.3.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.1",
     "styled-jsx": "^2.2.6"
