@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ token: "asdf" }, () => {
-    console.log("Token initialised.");
-  });
+  // chrome.storage.sync.set({ token: "asdf" }, () => {
+  //   console.log("Token initialised.");
+  // });
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     chrome.declarativeContent.onPageChanged.addRules([
       {
