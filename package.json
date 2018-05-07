@@ -2,12 +2,17 @@
   "name": "udex",
   "version": "1.1.2",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
+  "watch": {
+    "build:content": "src/js/main.js",
+    "build:background": "src/js/background.js"
+  },
   "scripts": {
-    "build": "parcel build src/js/main.js -d build/ -o main",
-    "watch": "parcel watch src/js/main.js -d build/ -o main",
+    "watch": "npm-watch",
+    "build:content": "parcel build src/js/main.js -d build/ -o main",
+    "prebuild:background": "rm build/background.js",
+    "build:background": "cp src/js/background.js build/background.js",
     "zip": "zip -r udex.zip build images manifest.json",
-    "prezip": "rm udex.zip",
-    "postbuild": "npm run zip"
+    "prezip": "rm udex.zip"
   },
   "author": "Mikkel Trolle Larsen",
   "dependencies": {
