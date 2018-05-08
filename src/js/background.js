@@ -1,35 +1,52 @@
-const api = {
-  rootUrl: "https://review-api.udacity.com/api/v1/",
-  assignedUrl: "me/submissions/assigned/",
-  feedbacksUrl: "me/student_feedbacks/",
-  headers: { Authorization: "" },
-  interval: 60000 // One minute in ms
+const rootUrl = "https://review-api.udacity.com/api/v1/";
+const assignedUrl = "me/submissions/assigned/";
+const feedbacksUrl = "me/student_feedbacks/";
+const headers = { Authorization: "" };
+const interval = 60000; // One minute in ms
+let assignedCount = 0;
+let feedbacksCount = 0;
+
+const badgeColor = () => {
+  return assignedCount > 0
+    ? "#ff0000"
+    : feedbacksCount > 0
+      ? "#00ff00"
+      : "#656565";
 };
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.get("token", function(data) {
-    api.headers.Authorization = data.token;
-    requestLoop();
-  });
-});
+const badgeText = () => {
+  return `${assignedCount}:${feedbacksCount > 9 ? "9+" : feedbacksCount}`;
+};
+
+const addBadge = () => {
+  chrome.browserAction.setBadgeBackgroundColor({ color: badgeColor() });
+  chrome.browserAction.setBadgeText({ text: badgeText() });
+};
 
 const apiCall = async path => {
-  const res = await fetch(`${api.rootUrl}${path}`, {
-    headers: api.headers
+  const res = await fetch(`${rootUrl}${path}`, {
+    headers
   });
   return res.json();
 };
 
-const requestLoop = () => {
-  setInterval(async () => {
-    const assigned = await apiCall(api.assignedUrl);
-    const feedbacks = await apiCall(api.feedbacksUrl);
-    const assignedCount = assigned.length.toString();
-    const feedbacksCount = feedbacks.filter(fb => fb.read_at === null).length;
-    const text = `${assignedCount}:${
-      feedbacksCount > 9 ? "9+" : feedbacksCount
-    }`;
-    chrome.browserAction.setBadgeText({ text });
-    console.log("loop called");
-  }, api.interval);
+const getReviewsInfo = async () => {
+  const assigned = await apiCall(assignedUrl);
+  const feedbacks = await apiCall(feedbacksUrl);
+  assignedCount = assigned.length.toString();
+  feedbacksCount = feedbacks.filter(fb => fb.read_at === null).length;
+  addBadge();
+  console.log("loop called");
 };
+
+const requestLoop = () => {
+  getReviewsInfo();
+  setInterval(getReviewsInfo, interval);
+};
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.get("token", function(data) {
+    headers.Authorization = data.token;
+    requestLoop();
+  });
+});
