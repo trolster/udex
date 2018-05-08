@@ -16,9 +16,9 @@ chrome.runtime.onInstalled.addListener(() => {
 // None: Grey;
 const badgeColor = () => {
   return assignedCount > 0
-    ? "#ff0000"
+    ? "#f44141"
     : feedbacksCount > 0
-      ? "#00ff00"
+      ? "#4286f4"
       : "#656565";
 };
 
