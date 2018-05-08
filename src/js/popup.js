@@ -1,7 +1,9 @@
 const changeToken = document.getElementById("changeToken");
 const tokenInputField = document.getElementById("token");
 const startButton = document.getElementById("start");
+console = chrome.extension.getBackgroundPage().console;
 
+// Token form
 const setTokenText = () => {
   chrome.storage.sync.get("token", function(data) {
     tokenInputField.value = data.token;
@@ -10,25 +12,32 @@ const setTokenText = () => {
   });
 };
 
-const setStartButtonText = () => {
-  chrome.storage.sync.get("started", data => {
-    startButton.value = data.started === "started" ? "running..." : "start";
-  });
-};
-
-startButton.addEventListener("click", e => {
-  const buttonState = startButton.value === "start" ? "running" : "start";
-  chrome.storage.sync.set({ started: buttonState }, data => {
-    startButton.value = buttonState;
-  });
-});
-
 changeToken.addEventListener("submit", e => {
   e.preventDefault();
   chrome.storage.sync.set({ token: tokenInputField.value }, () => {
     setTokenText();
-    chrome.extension.getBackgroundPage().console.log("token set");
   });
 });
 
 setTokenText();
+
+// Start button
+startButton.addEventListener("click", e => {
+  chrome.storage.sync.get("running", data => {
+    const running = !data.running;
+    chrome.storage.sync.set({ running }, () => {
+      chrome.runtime.sendMessage({ running }, res => {
+        if (res && res.success) {
+          startButton.value = running ? "running" : "start";
+        } else {
+          console.error("an error occured");
+        }
+      });
+    });
+  });
+});
+
+// Set the text when the extension loads
+chrome.storage.sync.get("running", data => {
+  startButton.value = data.running ? "running" : "start";
+});

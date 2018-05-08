@@ -6,6 +6,14 @@ const interval = 60000; // One minute in ms
 let assignedCount = 0;
 let feedbacksCount = 0;
 
+// Assign initial value to run the request loop.
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({ running: true });
+});
+
+// Assigned: red;
+// Feedbacks but no assigned: blue;
+// None: Grey;
 const badgeColor = () => {
   return assignedCount > 0
     ? "#ff0000"
@@ -49,4 +57,10 @@ chrome.runtime.onInstalled.addListener(() => {
     headers.Authorization = data.token;
     requestLoop();
   });
+});
+
+// Start button message
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  console.log(msg);
+  sendResponse({ success: true });
 });
