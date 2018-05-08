@@ -1,6 +1,6 @@
 {
   "name": "udex",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "watch": {
     "build:content": "src/js/main.js",
