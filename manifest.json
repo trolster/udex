@@ -16,6 +16,10 @@
     ],
     "persistent": false
   },
+  "browser_action": {
+    "default_title": "udex",
+    "default_popup": "build/popup.html"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -27,9 +31,6 @@
       ]
     }
   ],
-  "page_action": {
-    "default_popup": "build/popup.html"
-  },
   "icons": {
     "16": "images/light-bulb-16.png",
     "32": "images/light-bulb-32.png",
