@@ -2,10 +2,16 @@
 <html>
 
 <head>
+  <style>
+    input:focus,
+    textarea {
+      outline: none !important;
+    }
+  </style>
 </head>
 
 <body>
-  <input type="button" id="start" value="loading...">
+  <input type="button" id="start">
   <form id="changeToken">
     <label for="token">Input Token:</label>
     <textarea name="token" id="token" cols="40" rows="10"></textarea>
