@@ -63,7 +63,7 @@ const apiCall = async path => {
 };
 
 const getReviewsInfo = async () => {
-  console.log(`token: ${token}`);
+  if (!running) return;
   if (!token) {
     assignedCount = "-";
     feedbacksCount = "-";
