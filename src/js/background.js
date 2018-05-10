@@ -1,4 +1,4 @@
-const APIACCESS =
+const API_ACCESS_TOKEN =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNzU1LCJleHAiOjE1MjgyOTYwMzYsInRva2VuX3R5cGUiOiJhcGkifQ.Ymg-sboRi9DT6d833YVvfryN3Dn_9gcc0xUCy-OwauA";
 const rootUrl = "https://review-api.udacity.com/api/v1/";
 const assignedUrl = "me/submissions/assigned/";
@@ -9,15 +9,17 @@ let assignedCount = 0;
 let feedbacksCount = 0;
 let token = null;
 let running = true;
+let loop;
+
+// Assign initial value to run the request loop.
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({ running });
+});
 
 const setRunningState = state => {
   running = state;
   chrome.storage.sync.set({ running });
 };
-// Assign initial value to run the request loop.
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ running });
-});
 
 // Get the token when the extension starts up.
 chrome.storage.sync.get("token", function(data) {
@@ -56,42 +58,39 @@ const addBadge = () => {
 };
 
 const apiCall = async path => {
-  const res = await fetch(`${rootUrl}${path}`, {
-    headers
-  });
+  const res = await fetch(`${rootUrl}${path}`, { headers });
   return res.json();
 };
 
 const getReviewsInfo = async () => {
-  if (!running) return;
-  if (!token) {
-    assignedCount = "-";
-    feedbacksCount = "-";
-    addBadge();
-    return;
-  }
   headers.Authorization = token;
   const assigned = await apiCall(assignedUrl);
   const feedbacks = await apiCall(feedbacksUrl);
   assignedCount = assigned.length.toString();
   feedbacksCount = feedbacks.filter(fb => fb.read_at === null).length;
   addBadge();
-  console.log("loop called");
 };
 
 const requestLoop = () => {
+  clearInterval(loop);
+  if (!token || !running) {
+    assignedCount = "-";
+    feedbacksCount = "-";
+    addBadge();
+    return;
+  }
   getReviewsInfo();
-  setInterval(getReviewsInfo, interval);
+  loop = setInterval(getReviewsInfo, interval);
 };
 
 // Start button message
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.hasOwnProperty("token")) {
-    token = msg.token;
-    getReviewsInfo();
+    token = msg.token === "" ? undefined : msg.token;
+    requestLoop();
   } else if (msg.hasOwnProperty("running")) {
     setRunningState(msg.running);
+    requestLoop();
   }
-  console.log(msg);
   sendResponse({ success: true });
 });
