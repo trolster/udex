@@ -84,16 +84,19 @@ const requestLoop = () => {
 };
 
 // Start button message
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.hasOwnProperty("newToken") || msg.hasOwnProperty("running")) {
-    if (msg.newToken) {
-      token = msg.newToken;
+chrome.runtime.onMessage.addListener(
+  ({ newToken, running }, sender, sendResponse) => {
+    if (newToken === undefined && running === undefined) {
+      sendResponse({ success: false });
+      return;
+    }
+
+    if (newToken) {
+      token = newToken;
     } else {
-      setRunningState(msg.running);
+      setRunningState(running);
     }
     requestLoop();
     sendResponse({ success: true });
-    return;
   }
-  sendResponse({ success: false });
-});
+);
