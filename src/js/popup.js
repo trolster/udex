@@ -32,16 +32,28 @@ const setTokenText = () => {
 };
 setTokenText();
 
+const validateToken = token => {
+  if (token.length === 151) {
+    tokenInputField.style.backgroundColor = "DarkSeaGreen";
+    return true;
+  }
+  tokenInputField.style.backgroundColor = "LightCoral";
+  tokenInputField.value = "Invalid token.";
+  return false;
+};
+
 tokenInputField.addEventListener("focus", () => {
   tokenInputField.select();
 });
 
 changeToken.addEventListener("submit", e => {
   e.preventDefault();
-  const token = tokenInputField.value;
-  chrome.storage.sync.set({ token }, () => {
+  const newToken = tokenInputField.value;
+  if (!validateToken(newToken)) return;
+
+  chrome.storage.sync.set({ token: newToken }, () => {
     setTokenText();
-    chrome.runtime.sendMessage({ token }, res => {
+    chrome.runtime.sendMessage({ newToken }, res => {
       if (res && res.success) {
         console.log("Token successfully set.");
       } else {

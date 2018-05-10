@@ -13,7 +13,7 @@ let loop;
 
 // Assign initial value to run the request loop.
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ running });
+  chrome.storage.sync.set({ running, token });
 });
 
 const setRunningState = state => {
@@ -28,7 +28,7 @@ chrome.storage.sync.get("token", function(data) {
     setRunningState(false);
     return;
   }
-  console.log("got token");
+  console.log(data.token);
   setRunningState(true);
   token = data.token;
   requestLoop();
@@ -85,12 +85,15 @@ const requestLoop = () => {
 
 // Start button message
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.hasOwnProperty("token")) {
-    token = msg.token === "" ? undefined : msg.token;
+  if (msg.hasOwnProperty("newToken") || msg.hasOwnProperty("running")) {
+    if (msg.newToken) {
+      token = msg.newToken;
+    } else {
+      setRunningState(msg.running);
+    }
     requestLoop();
-  } else if (msg.hasOwnProperty("running")) {
-    setRunningState(msg.running);
-    requestLoop();
+    sendResponse({ success: true });
+    return;
   }
-  sendResponse({ success: true });
+  sendResponse({ success: false });
 });
