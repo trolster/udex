@@ -1,76 +1,41 @@
-const API_ACCESS_TOKEN =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNzU1LCJleHAiOjE1MjgyOTYwMzYsInRva2VuX3R5cGUiOiJhcGkifQ.Ymg-sboRi9DT6d833YVvfryN3Dn_9gcc0xUCy-OwauA";
-const rootUrl = "https://review-api.udacity.com/api/v1/";
-const assignedUrl = "me/submissions/assigned/";
-const feedbacksUrl = "me/student_feedbacks/";
-const headers = { Authorization: "" };
-const interval = 60000; // One minute in ms
 let assignedCount = 0;
 let feedbacksCount = 0;
 let token = null;
 let running = true;
 let loop;
 
-// Assign initial value to run the request loop.
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ running, token });
-});
-
-const setRunningState = state => {
-  running = state;
-  chrome.storage.sync.set({ running });
-};
-
-// Get the token when the extension starts up.
-chrome.storage.sync.get("token", function(data) {
-  if (!data.token) {
-    console.log("Token not set.");
-    setRunningState(false);
-    return;
-  }
-  console.log(data.token);
-  setRunningState(true);
-  token = data.token;
-  requestLoop();
-});
-
-// Assigned: red;
-// Feedbacks but no assigned: blue;
-// None: Grey;
-const badgeColor = () => {
-  if (assignedCount === "-") {
-    return "#656565";
-  }
-  return assignedCount > 0
-    ? "#f44141"
-    : feedbacksCount > 0
-      ? "#4286f4"
-      : "#656565";
-};
-
-const badgeText = () => {
-  return `${assignedCount}:${feedbacksCount > 9 ? "9+" : feedbacksCount}`;
-};
-
+// Add a badge to the browser icon.
 const addBadge = () => {
-  chrome.browserAction.setBadgeBackgroundColor({ color: badgeColor() });
-  chrome.browserAction.setBadgeText({ text: badgeText() });
+  const text = `${assignedCount}:${feedbacksCount > 9 ? "9+" : feedbacksCount}`;
+  const color =
+    assignedCount === "-"
+      ? "#656565" // No token: grey.
+      : assignedCount > 0
+        ? "#f44141" // 1+ submissions assigned: red.
+        : feedbacksCount > 0
+          ? "#4286f4" // 1+ feedbacks unread, no submissions assigned: blue.
+          : "#656565"; // No submissions assigned and no feedbacks: grey.
+  chrome.browserAction.setBadgeText({ text });
+  chrome.browserAction.setBadgeBackgroundColor({ color });
 };
 
+// REQUEST LOOP
 const apiCall = async path => {
-  const res = await fetch(`${rootUrl}${path}`, { headers });
+  const res = await fetch(`https://review-api.udacity.com/api/v1/${path}`, {
+    headers: { Authorization: token }
+  });
   return res.json();
 };
 
 const getReviewsInfo = async () => {
-  headers.Authorization = token;
-  const assigned = await apiCall(assignedUrl);
-  const feedbacks = await apiCall(feedbacksUrl);
+  const assigned = await apiCall("me/submissions/assigned/"); // assigned
+  const feedbacks = await apiCall("me/student_feedbacks/"); // feedbacks
   assignedCount = assigned.length.toString();
   feedbacksCount = feedbacks.filter(fb => fb.read_at === null).length;
   addBadge();
 };
 
+// Set the request loop.
 const requestLoop = () => {
   clearInterval(loop);
   if (!token || !running) {
@@ -80,23 +45,56 @@ const requestLoop = () => {
     return;
   }
   getReviewsInfo();
-  loop = setInterval(getReviewsInfo, interval);
+  loop = setInterval(getReviewsInfo, 60000); // 60 second interval
 };
 
-// Start button message
-chrome.runtime.onMessage.addListener(
-  ({ newToken, running }, sender, sendResponse) => {
-    if (newToken === undefined && running === undefined) {
-      sendResponse({ success: false });
-      return;
-    }
-
-    if (newToken) {
-      token = newToken;
-    } else {
-      setRunningState(running);
-    }
+// STORAGE
+// Save the token.
+const setToken = newToken => {
+  chrome.storage.sync.set({ token: newToken }, () => {
+    token = newToken;
     requestLoop();
-    sendResponse({ success: true });
+  });
+};
+
+// Save the running state.
+const setRunningState = () => {
+  chrome.storage.sync.get("running", data => {
+    running = data.running !== undefined ? !data.running : running;
+    chrome.storage.sync.set({ running }, () => {
+      chrome.runtime.sendMessage({ running });
+      requestLoop();
+    });
+  });
+};
+
+// MESSAGES
+// Messages from popup
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const { newToken, runningState } = msg;
+  if (newToken === undefined && runningState === undefined) {
+    sendResponse({ success: false, text: "No recognized value was given." });
+    return;
   }
-);
+
+  if (newToken) {
+    setToken(newToken);
+  } else {
+    setRunningState({ runningState });
+  }
+  sendResponse({ success: true });
+  requestLoop();
+});
+
+// INITIALIZATION
+// Get the token and running state when the extension starts up.
+chrome.storage.sync.get(["token", "running"], function(data) {
+  token = data.token !== undefined ? data.token : null;
+  running = data.running !== undefined ? data.running : true;
+  requestLoop();
+});
+
+// Set the running state when the extension is first installed.
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({ running: true });
+});
