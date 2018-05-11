@@ -83,7 +83,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     setRunningState({ runningState });
   }
   sendResponse({ success: true });
-  requestLoop();
 });
 
 // INITIALIZATION
