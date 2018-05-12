@@ -60,7 +60,7 @@ const setToken = newToken => {
 // Save the running state.
 const setRunningState = () => {
   chrome.storage.sync.get("running", data => {
-    running = data.running !== undefined ? !data.running : running;
+    running = data.running === undefined ? true : !data.running;
     chrome.storage.sync.set({ running }, () => {
       chrome.runtime.sendMessage({ running });
       requestLoop();
@@ -85,8 +85,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 // INITIALIZATION
 // Get the token and running state when the extension starts up.
 chrome.storage.sync.get(["token", "running"], function(data) {
-  token = data.token !== undefined ? data.token : null;
-  running = data.running !== undefined ? data.running : true;
+  token = data.token === undefined ? null : data.token;
+  running = data.running === undefined ? true : data.running;
   requestLoop();
 });
 
