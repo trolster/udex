@@ -28,7 +28,7 @@
         "https://review.udacity.com/*"
       ],
       "js": [
-        "build/main.js"
+        "build/contentScript.js"
       ]
     }
   ],
