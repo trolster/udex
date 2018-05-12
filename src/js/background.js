@@ -71,16 +71,13 @@ const setRunningState = () => {
 // MESSAGES
 // Messages from popup
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  const { newToken, runningState } = msg;
-  if (newToken === undefined && runningState === undefined) {
+  if (msg.newToken) {
+    setToken(msg.newToken);
+  } else if (msg.runningState) {
+    setRunningState();
+  } else {
     sendResponse({ success: false, text: "No recognized value was given." });
     return;
-  }
-
-  if (newToken) {
-    setToken(newToken);
-  } else {
-    setRunningState({ runningState });
   }
   sendResponse({ success: true });
 });
