@@ -1,9 +1,10 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/js/popup.js",
+  mode: "production",
+  entry: { popup: "./src/popup.js", background: "./src/background.js" },
   output: {
-    filename: "popup.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist")
   }
 };
