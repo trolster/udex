@@ -6,18 +6,18 @@ const tokenInputField = document.getElementById("token");
 console = chrome.extension.getBackgroundPage().console;
 
 // START BUTTON
-const setStartButtonText = running => {
-  startButton.value = running ? "running" : "start";
+const setStartButtonText = () => {
+  chrome.storage.sync.get("running", data => {
+    startButton.value = data.running ? "running" : "start";
+  });
 };
+setStartButtonText();
 
-// Initialize the button text.
-chrome.storage.sync.get("running", data => {
-  setStartButtonText(data.running);
-});
-
-// Set the start-button text when the value is set.
+// Set the start-button text when the button is clicked.
 chrome.runtime.onMessage.addListener(msg => {
-  setStartButtonText(msg.running);
+  if (msg.running !== undefined) {
+    setStartButtonText();
+  }
 });
 
 // Send a message to background.js when the button is clicked.
