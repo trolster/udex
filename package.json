@@ -4,6 +4,7 @@
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "private": true,
   "scripts": {
+    "build": "webpack",
     "prebuild:background": "rm -rf dist/background.js, dist/popup.html, dist/popup.js",
     "build:background": "cp src/js/background.js src/js/popup.js src/popup.html dist/",
     "prezip": "rm udex.zip",
