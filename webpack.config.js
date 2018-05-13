@@ -14,7 +14,8 @@ module.exports = {
     new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
       filename: 'popup.html',
-      template: 'src/popup.html'
+      template: 'src/popup.html',
+      inject: false
     })
   ],
   module: {

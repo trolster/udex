@@ -1,65 +1,102 @@
-const startButton = document.getElementById("start");
-const changeToken = document.getElementById("changeToken");
-const tokenInputField = document.getElementById("token");
-
+import React from 'react'
+import ReactDOM from "react-dom";
 // Send console.log messages to the background page for development.
 console = chrome.extension.getBackgroundPage().console;
 
-// START BUTTON
-const setStartButtonText = () => {
-  chrome.storage.sync.get("running", data => {
-    startButton.value = data.running ? "running" : "start";
-  });
-};
-setStartButtonText();
-
-// Set the start-button text when the button is clicked.
-chrome.runtime.onMessage.addListener(msg => {
-  if (msg.running !== undefined) {
-    setStartButtonText();
+class Popup extends React.Component {
+  state = {
+    running: true,
+    token: ""
   }
-});
 
-// Send a message to background.js when the button is clicked.
-startButton.addEventListener("click", e => {
-  chrome.runtime.sendMessage({ runningState: true }, res => {
-    if (!res.success) {
-      console.error(`Error: ${res.text}`);
-    }
-  });
-});
+  setRunningState = () => {
+    chrome.storage.sync.get("running", data => {
+      this.setState({running: !this.state.running})
+    });
+  };
 
-// TOKEN
-// Initialize the textarea with token text.
-chrome.storage.sync.get("token", function(data) {
-  tokenInputField.value = data.token;
-});
-
-// Select all the text in the textarea when it is clicked.
-tokenInputField.addEventListener("focus", () => {
-  tokenInputField.select();
-});
-
-// Validate the token based on a string length of 151.
-const validateToken = token => {
-  if (token.length === 151) {
-    tokenInputField.style.backgroundColor = "DarkSeaGreen";
-    return true;
+  handleRunningStateChange = () => {
+    // Send a message to background.js when the button is clicked.
+    chrome.runtime.sendMessage({ runningState: true }, res => {
+      if (!res.success) {
+        console.error(`Error: ${res.text}`);
+      }
+    });
   }
-  tokenInputField.style.backgroundColor = "LightCoral";
-  tokenInputField.value = "Invalid token.";
-  return false;
-};
 
-changeToken.addEventListener("submit", e => {
-  e.preventDefault();
-  const newToken = tokenInputField.value;
-  if (!validateToken(newToken)) return;
+  handleTokenFocus = (e) => {
+    e.target.select();
+  }
+  
+  handleTokenChange = (e) => {
+    this.setState({token: e.target.value})
+  }
 
-  // Send a message to background.js when a new token is successfully entered.
-  chrome.runtime.sendMessage({ newToken }, res => {
-    if (!res.success) {
-      console.error(`Error: ${res.text}`);
-    }
-  });
-});
+  handleTokenSubmit = (e) => {
+    e.preventDefault();
+    const newToken = this.state.token;
+    // Validate the token
+    // if (newToken.length !== 151) {
+    //   element.style.backgroundColor = "LightCoral";
+    //   element.value = "Invalid token.";
+    //   return;
+    // }
+    // element.style.backgroundColor = "DarkSeaGreen";
+
+    // Send a message to background.js when a new token is successfully entered.
+    chrome.runtime.sendMessage({ newToken }, res => {
+      if (!res.success) {
+        console.error(`Error: ${res.text}`);
+      }
+    });
+  }
+
+  componentDidMount = () => {
+    this.setRunningState();
+    // Listen for confirmation from background.js after start/stop is clicked.
+    chrome.runtime.onMessage.addListener(msg => {
+      if (msg.running !== undefined) {
+        this.setRunningState();
+      }
+    });
+    // Initialize the textarea with token text.
+    chrome.storage.sync.get("token", (data) => {
+      this.setState({token: data.token})
+    });
+  }
+
+  render() {
+    const {running, token} = this.state
+    return(
+      <div>
+        <input
+          type="button"
+          id="start-button"
+          onClick={this.handleRunningStateChange}
+          value={running ? "running" : "start"}
+        />
+        <form id="change-token" onSubmit={this.handleTokenSubmit} >
+          <label htmlFor="token">Current Token:</label>
+          <textarea
+            name="token"
+            id="token"
+            onFocus={this.handleTokenFocus}
+            onChange={this.handleTokenChange}
+            cols="40"
+            rows="10"
+            value={token}
+          />
+          <input type="submit" />
+        </form>
+        <style jsx>{`
+          input:focus,
+          textarea {
+            outline: none !important;
+          }`}
+        </style>
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(<Popup />, document.getElementById("popup"));
