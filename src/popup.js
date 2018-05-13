@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import ReactDOM from "react-dom";
 // Send console.log messages to the background page for development.
 console = chrome.extension.getBackgroundPage().console;
@@ -7,11 +7,11 @@ class Popup extends React.Component {
   state = {
     running: true,
     token: ""
-  }
+  };
 
   setRunningState = () => {
     chrome.storage.sync.get("running", data => {
-      this.setState({running: data.running})
+      this.setState({ running: data.running });
     });
   };
 
@@ -22,33 +22,33 @@ class Popup extends React.Component {
         console.error(`Error: ${res.text}`);
       }
     });
-  }
+  };
 
-  handleTokenFocus = (e) => {
+  handleTokenFocus = e => {
     e.target.select();
-  }
-  
-  handleTokenChange = (e) => {
-    this.setState({token: e.target.value})
-  }
+  };
 
-  handleTokenSubmit = (e) => {
+  handleTokenChange = e => {
+    this.setState({ token: e.target.value });
+  };
+
+  handleTokenSubmit = e => {
     e.preventDefault();
     const newToken = this.state.token;
     // Validate the token
     if (newToken.length !== 151) {
-      this.setState({valid: false})
+      this.setState({ valid: false });
       return;
     }
-    this.setState({ valid: true })
-    
+    this.setState({ valid: true });
+
     // Send a message to background.js when a new token is successfully entered.
     chrome.runtime.sendMessage({ newToken }, res => {
       if (!res.success) {
         console.error(`Error: ${res.text}`);
       }
     });
-  }
+  };
 
   componentDidMount = () => {
     // Listen for confirmation from background.js after start/stop is clicked.
@@ -58,16 +58,16 @@ class Popup extends React.Component {
       }
     });
     // Initialize the textarea with token text.
-    chrome.storage.sync.get(["running", "token"], (data) => {
-      this.setState({ running: data.running, token: data.token })
+    chrome.storage.sync.get(["running", "token"], data => {
+      this.setState({ running: data.running, token: data.token });
     });
-  }
-  
+  };
+
   render() {
-    console.log(this.state)
-    const {running, token, valid} = this.state
+    console.log(this.state);
+    const { running, token, valid } = this.state;
     const labelClass = valid === undefined ? "" : valid ? "valid" : "invalid";
-    return(
+    return (
       <div>
         <input
           type="button"
@@ -75,9 +75,9 @@ class Popup extends React.Component {
           onClick={this.handleRunningStateChange}
           value={running ? "running" : "start"}
         />
-        <form id="change-token" onSubmit={this.handleTokenSubmit} >
+        <form id="change-token" onSubmit={this.handleTokenSubmit}>
           <label htmlFor="token" className={`token-label ${labelClass}`}>
-            {(valid === undefined) || valid ? "Current Token" : "Invalid Token"}
+            {valid === undefined || valid ? "Current Token" : "Invalid Token"}
           </label>
           <textarea
             name="token"
@@ -90,21 +90,22 @@ class Popup extends React.Component {
           />
           <input type="submit" />
         </form>
-        <style jsx>{`
-          input:focus,
-          .token-label {
-            outline: none !important;
-          }
-          .valid {
-            background-color: "DarkSeaGreen";
-          }
-          .invalid {
-            background-color: "LightCoral";
-          }
-        `}
+        <style jsx>
+          {`
+            input:focus,
+            .token-label {
+              outline: none !important;
+            }
+            .valid {
+              background-color: "DarkSeaGreen";
+            }
+            .invalid {
+              background-color: "LightCoral";
+            }
+          `}
         </style>
       </div>
-    )
+    );
   }
 }
 
