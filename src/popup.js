@@ -11,7 +11,7 @@ class Popup extends React.Component {
 
   setRunningState = () => {
     chrome.storage.sync.get("running", data => {
-      this.setState({running: !this.state.running})
+      this.setState({running: data.running})
     });
   };
 
@@ -52,7 +52,6 @@ class Popup extends React.Component {
   }
 
   componentDidMount = () => {
-    this.setRunningState();
     // Listen for confirmation from background.js after start/stop is clicked.
     chrome.runtime.onMessage.addListener(msg => {
       if (msg.running !== undefined) {
@@ -60,8 +59,10 @@ class Popup extends React.Component {
       }
     });
     // Initialize the textarea with token text.
-    chrome.storage.sync.get("token", (data) => {
-      this.setState({token: data.token})
+    chrome.storage.sync.get(["running", "token"], (data) => {
+      this.setState({ running: data.running, token: data.token }, () => {
+        console.log(this.state)
+      })
     });
   }
 
@@ -83,7 +84,7 @@ class Popup extends React.Component {
             onFocus={this.handleTokenFocus}
             onChange={this.handleTokenChange}
             cols="40"
-            rows="10"
+            rows="4"
             value={token}
           />
           <input type="submit" />
