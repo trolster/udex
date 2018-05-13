@@ -6,10 +6,8 @@
   "scripts": {
     "watch": "webpack --watch --config ./webpack.config.js --mode development",
     "build": "webpack --config ./webpack.config.js --mode production",
-    "prebuild:background": "rm -rf dist/background.js, dist/popup.html, dist/popup.js",
-    "build:background": "cp src/js/background.js src/js/popup.js src/popup.html dist/",
-    "prezip": "rm udex.zip",
-    "zip": "zip -r udex.zip build images manifest.json"
+    "prepackage": "rm -f udex.zip",
+    "package": "zip -r udex.zip dist images manifest.json"
   },
   "author": "Mikkel Trolle Larsen",
   "dependencies": {
