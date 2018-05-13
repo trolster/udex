@@ -36,13 +36,12 @@ class Popup extends React.Component {
     e.preventDefault();
     const newToken = this.state.token;
     // Validate the token
-    // if (newToken.length !== 151) {
-    //   element.style.backgroundColor = "LightCoral";
-    //   element.value = "Invalid token.";
-    //   return;
-    // }
-    // element.style.backgroundColor = "DarkSeaGreen";
-
+    if (newToken.length !== 151) {
+      this.setState({valid: false})
+      return;
+    }
+    this.setState({ valid: true })
+    
     // Send a message to background.js when a new token is successfully entered.
     chrome.runtime.sendMessage({ newToken }, res => {
       if (!res.success) {
@@ -60,14 +59,14 @@ class Popup extends React.Component {
     });
     // Initialize the textarea with token text.
     chrome.storage.sync.get(["running", "token"], (data) => {
-      this.setState({ running: data.running, token: data.token }, () => {
-        console.log(this.state)
-      })
+      this.setState({ running: data.running, token: data.token })
     });
   }
-
+  
   render() {
-    const {running, token} = this.state
+    console.log(this.state)
+    const {running, token, valid} = this.state
+    const labelClass = valid === undefined ? "" : valid ? "valid" : "invalid";
     return(
       <div>
         <input
@@ -77,23 +76,32 @@ class Popup extends React.Component {
           value={running ? "running" : "start"}
         />
         <form id="change-token" onSubmit={this.handleTokenSubmit} >
-          <label htmlFor="token">Current Token:</label>
+          <label htmlFor="token" className={`token-label ${labelClass}`}>
+            {(valid === undefined) || valid ? "Current Token" : "Invalid Token"}
+          </label>
           <textarea
             name="token"
             id="token"
             onFocus={this.handleTokenFocus}
             onChange={this.handleTokenChange}
             cols="40"
-            rows="4"
+            rows="5"
             value={token}
           />
           <input type="submit" />
         </form>
         <style jsx>{`
           input:focus,
-          textarea {
+          .token-label {
             outline: none !important;
-          }`}
+          }
+          .valid {
+            background-color: "DarkSeaGreen";
+          }
+          .invalid {
+            background-color: "LightCoral";
+          }
+        `}
         </style>
       </div>
     )
