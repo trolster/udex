@@ -1,5 +1,6 @@
 const path = require("path");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -9,7 +10,13 @@ module.exports = {
     background: "./src/background.js",
     contentScript: "./src/contentScript.js"
   },
-  plugins: [new CleanWebpackPlugin(["dist"])],
+  plugins: [
+    new CleanWebpackPlugin(["dist"]),
+    new HtmlWebpackPlugin({
+      filename: 'popup.html',
+      template: 'src/popup.html'
+    })
+  ],
   module: {
     rules: [
       {
