@@ -20,6 +20,11 @@
 It updates the extension icon with a badge that shows if you have new reviews and/or unread feedbacks from students.
 ![Extension Icon Badges][badges]
 
+**Badge colors**:
+Red: You have new reviews.
+Blue: You have no new reviews but you have new feedbacks.
+Grey: You have no new reviews and no new feedbacks.
+
 ### Review Page Buttons
 
 It adds some buttons to the review page with some actions associated:
