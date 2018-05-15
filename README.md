@@ -18,6 +18,7 @@
 ### Extension Icon Notification
 
 It updates the extension icon with a badge that shows if you have new reviews and/or unread feedbacks from students.
+
 ![Extension Icon Badges][badges]
 
 **Badge numbers**: The first number is the number of new reviews available. The second number is the number of unread student feedbacks you have.
