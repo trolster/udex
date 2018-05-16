@@ -82,6 +82,6 @@ MIT
 
 [1]: https://www.mtl.codes/projects/udex
 [2]: https://review.udacity.com/#!/submissions/dashboard
-[badges]: https://i.imgur.com/cMfwmZ8.jpg
-[buttons]: https://i.imgur.com/qXYQl65.png
-[token]: http://i.imgur.com/QH7onbk.png
+[badges]: https://readmeimages-wautwxpogk.now.sh/readme-udex-badges.png
+[buttons]: https://readmeimages-wautwxpogk.now.sh/readme-udex-buttons.png
+[token]: https://readmeimages-kvmrxqcrux.now.sh/readme-api-access.png
