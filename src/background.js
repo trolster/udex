@@ -9,10 +9,18 @@ const apiCall = async path => {
   const res = await fetch(`https://review-api.udacity.com/api/v1/${path}`, {
     headers: { Authorization: token }
   });
+  if (res.status === 401) {
+    set("valid", false);
+  }
   return res.json();
 };
 
 const getReviewsInfo = async () => {
+  const { valid, running } = await get(["valid", "running"]);
+  if (!valid || !running) {
+    addBadge("-", "-");
+    return;
+  }
   const assigned = await apiCall("me/submissions/assigned/");
   const feedbacks = await apiCall("me/student_feedbacks/");
   const assignedCount = assigned.length.toString();
@@ -23,11 +31,6 @@ const getReviewsInfo = async () => {
 // Start and stop the request loop.
 const requestLoop = async () => {
   clearInterval(loop);
-  const { valid, running } = await get(["valid", "running"]);
-  if (!valid || !running) {
-    addBadge("-", "-");
-    return;
-  }
   getReviewsInfo();
   loop = setInterval(getReviewsInfo, 60000); // 60 second interval
 };

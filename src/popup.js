@@ -58,15 +58,12 @@ class Popup extends React.Component {
       if (data.token) {
         this.setState({ ...data, saved: true });
       }
-      this.setState(data, () => {
-        // console.log(this.state.running);
-      });
+      this.setState(data);
     });
   }
 
   render() {
     const { running, token, valid, saved } = this.state;
-    console.log(running);
     return (
       <div>
         <input
