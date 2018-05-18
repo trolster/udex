@@ -19,8 +19,7 @@ export const set = (key, value) => {
   });
 };
 
-export const toggleRunning = () => {
-  get("running", data => {
-    set("running", !data.running);
-  });
+export const toggleRunning = async () => {
+  const data = await get("running");
+  set("running", !data.running);
 };

@@ -6,7 +6,9 @@ import { get } from "./storage/storageSync";
 console = chrome.extension.getBackgroundPage().console;
 
 class Popup extends React.Component {
-  state = {};
+  state = {
+    saved: false
+  };
 
   handleRunningStateChange = () => {
     // Send a message to background.js when the button is clicked.
@@ -22,7 +24,7 @@ class Popup extends React.Component {
   };
 
   handleTokenChange = e => {
-    this.setState({ token: e.target.value });
+    this.setState({ token: e.target.value, saved: false });
     // Make sure the token is at least the right length. Beyond that there is
     // no way to check if the token is valid without making an API call.
     if (e.target.value.length !== 151) {
@@ -53,12 +55,18 @@ class Popup extends React.Component {
     chrome.runtime.onMessage.addListener(async msg => {
       const key = msg.changed;
       const data = await get(key);
-      this.setState(data);
+      if (data.token) {
+        this.setState({ ...data, saved: true });
+      }
+      this.setState(data, () => {
+        // console.log(this.state.running);
+      });
     });
   }
 
   render() {
-    const { running, token, valid } = this.state;
+    const { running, token, valid, saved } = this.state;
+    console.log(running);
     return (
       <div>
         <input
@@ -132,7 +140,12 @@ class Popup extends React.Component {
             }
             textarea {
               height: 100px;
-              border-color: #1f9bcf;
+              border-color: ${saved
+                ? "#4bbf73"
+                : valid
+                  ? "#1f9bcf"
+                  : "#d9534f"};
+              border-radius: 4px;
               resize: none;
               padding: 4px;
             }

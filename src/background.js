@@ -44,6 +44,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     sendResponse({ success: false, text: "No recognized value was given." });
     return;
   }
+});
+
+chrome.storage.onChanged.addListener(() => {
   requestLoop();
 });
 
