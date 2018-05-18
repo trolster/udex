@@ -1,20 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+// Our modules
+import { get } from "./storage/storageSync";
 // Send console.log messages to the background page for development.
 console = chrome.extension.getBackgroundPage().console;
 
 class Popup extends React.Component {
-  state = {
-    running: true,
-    token: "",
-    valid: true
-  };
-
-  setRunningState = () => {
-    chrome.storage.sync.get("running", data => {
-      this.setState({ running: data.running });
-    });
-  };
+  state = {};
 
   handleRunningStateChange = () => {
     // Send a message to background.js when the button is clicked.
@@ -31,7 +23,8 @@ class Popup extends React.Component {
 
   handleTokenChange = e => {
     this.setState({ token: e.target.value });
-    // Validate the token
+    // Make sure the token is at least the right length. Beyond that there is
+    // no way to check if the token is valid without making an API call.
     if (e.target.value.length !== 151) {
       this.setState({ valid: false });
       return;
@@ -44,28 +37,27 @@ class Popup extends React.Component {
     const newToken = this.state.token;
 
     // Send a message to background.js when a new token is successfully entered.
-    chrome.runtime.sendMessage({ newToken }, res => {
+    chrome.runtime.sendMessage({ token: newToken }, res => {
       if (!res.success) {
         console.error(`Error: ${res.text}`);
       }
     });
   };
 
-  componentDidMount = () => {
-    // Listen for confirmation from background.js after start/stop is clicked.
-    chrome.runtime.onMessage.addListener(msg => {
-      if (msg.running !== undefined) {
-        this.setRunningState();
-      }
+  async componentDidMount() {
+    // Initialize the state object.
+    const data = await get(["token", "running", "valid"]);
+    this.setState(data);
+
+    // Listen for storage changes.
+    chrome.runtime.onMessage.addListener(async msg => {
+      const key = msg.changed;
+      const data = await get(key);
+      this.setState(data);
     });
-    // Initialize the textarea with token text.
-    chrome.storage.sync.get(["running", "token"], data => {
-      this.setState({ running: data.running, token: data.token });
-    });
-  };
+  }
 
   render() {
-    console.log(this.state);
     const { running, token, valid } = this.state;
     return (
       <div>
@@ -90,7 +82,7 @@ class Popup extends React.Component {
             placeholder="Your token goes here (must be 151 charactes)..."
             value={token}
           />
-          <input type="submit" />
+          <input type="submit" disabled={valid ? false : "disabled"} />
         </form>
         <style jsx>
           {`
@@ -116,6 +108,10 @@ class Popup extends React.Component {
             input[type="submit"] {
               float: right;
               margin: 10px 0;
+            }
+            input[type="submit"]:disabled {
+              opacity: 0.65;
+              cursor: default;
             }
             input[type="button"] {
               width: 100%;
