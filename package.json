@@ -1,6 +1,6 @@
 {
   "name": "udex",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A quality-of-life Extension for Udacity Reviewers.",
   "private": true,
   "scripts": {
