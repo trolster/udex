@@ -27,7 +27,7 @@ class Popup extends React.Component {
     this.setState({ token: e.target.value, saved: false });
     // Make sure the token is at least the right length. Beyond that there is
     // no way to check if the token is valid without making an API call.
-    if (e.target.value.length !== 151) {
+    if (e.target.value.length < 140) {
       this.setState({ valid: false });
       return;
     }
@@ -84,7 +84,7 @@ class Popup extends React.Component {
             onChange={this.handleTokenChange}
             cols="50"
             rows="5"
-            placeholder="Your token goes here (must be 151 charactes)..."
+            placeholder="Your token goes here (should be at least 140 charactes)..."
             value={token}
           />
           <input type="submit" disabled={valid ? false : "disabled"} />
